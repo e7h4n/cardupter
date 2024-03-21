@@ -7,6 +7,8 @@ extern "C" {
 
 
 void hal_setup(void);
+
+_Noreturn
 void hal_loop(void);
 
 

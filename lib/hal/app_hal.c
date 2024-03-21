@@ -1,10 +1,8 @@
-#include <unistd.h>
-#define SDL_MAIN_HANDLED        /*To fix SDL's "undefined reference to WinMain" issue*/
+#include "app_hal.h"
+
+#ifdef USE_SDL
+
 #include <SDL2/SDL.h>
-#include "display/monitor.h"
-#include "indev/mouse.h"
-#include "indev/mousewheel.h"
-#include "indev/keyboard.h"
 #include "sdl/sdl.h"
 
 
@@ -13,27 +11,17 @@
  * @param data unused
  * @return never return
  */
-static int tick_thread(void * data)
-{
-    (void)data;
+_Noreturn static int tick_thread(void *data) {
+    (void) data;
 
-    while(1) {
-        SDL_Delay(5);   /*Sleep for 5 millisecond*/
-        lv_tick_inc(5); /*Tell LittelvGL that 5 milliseconds were elapsed*/
+    while (1) {
+        SDL_Delay(5);
+        lv_tick_inc(5);
     }
-
-    return 0;
 }
 
 
-void hal_setup(void)
-{
-    // Workaround for sdl2 `-m32` crash
-    // https://bugs.launchpad.net/ubuntu/+source/libsdl2/+bug/1775067/comments/7
-    #ifndef WIN32
-        setenv("DBUS_FATAL_WARNINGS", "0", 1);
-    #endif
-
+void hal_setup(void) {
     /* Add a display
      * Use the 'monitor' driver which creates window on PC's monitor to simulate a display*/
 
@@ -42,13 +30,11 @@ void hal_setup(void)
     lv_disp_draw_buf_init(&disp_buf, buf, NULL, SDL_HOR_RES * 10);    /*Initialize the display buffer*/
 
     static lv_disp_drv_t disp_drv;
-    lv_disp_drv_init(&disp_drv);              /*Basic initialization*/
-    disp_drv.flush_cb = sdl_display_flush;    /*Used when `LV_VDB_SIZE != 0` in lv_conf.h (buffered drawing)*/
+    lv_disp_drv_init(&disp_drv);
+    disp_drv.flush_cb = sdl_display_flush;
     disp_drv.draw_buf = &disp_buf;
     disp_drv.hor_res = SDL_HOR_RES;
     disp_drv.ver_res = SDL_VER_RES;
-    //disp_drv.disp_fill = monitor_fill;      /*Used when `LV_VDB_SIZE == 0` in lv_conf.h (unbuffered drawing)*/
-    //disp_drv.disp_map = monitor_map;        /*Used when `LV_VDB_SIZE == 0` in lv_conf.h (unbuffered drawing)*/
     lv_disp_drv_register(&disp_drv);
 
     /* Add the mouse as input device
@@ -67,10 +53,22 @@ void hal_setup(void)
     SDL_CreateThread(tick_thread, "tick", NULL);
 }
 
-void hal_loop(void)
-{
-    while(1) {
+_Noreturn void hal_loop(void) {
+    while (1) {
         SDL_Delay(5);
         lv_task_handler();
     }
 }
+
+#elif ARDUINO_M5Stack_StampS3
+
+#include <Arduino.h>
+
+void hal_setup(void) {
+}
+
+void hal_loop(void) {
+    delay(5);
+}
+
+#endif
