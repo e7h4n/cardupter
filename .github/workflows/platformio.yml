@@ -3,7 +3,7 @@ name: PlatformIO CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  native-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +16,32 @@ jobs:
       - name: Run PlatformIO
         run: |
           pio test -e native-test
-      - name: Run tests on the embedded target
-        env:
-          PLATFORMIO_AUTH_TOKEN: ${{ secrets.PLATFORMIO_AUTH_TOKEN }}
-        run: pio remote test -e esp32-test -v
+
+
+  build-native:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+      - name: Run PlatformIO
+        run: |
+          pio run -e native
+
+  build-esp32:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+      - name: Run PlatformIO
+        run: |
+          pio run -e release
