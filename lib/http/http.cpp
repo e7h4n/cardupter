@@ -73,8 +73,8 @@ json fill_json_resp_by_get(const std::string &url)
 {
     printf("url: %s\n", url.c_str());
     json data = {
-        {"credit_card_balance", 1000.0},
-        {"cash_balance", 2000.0},
+        {"credit_card_balance", 100.0},
+        {"cash_balance", 200.0},
         {"xirr", 0.1},
     };
 
