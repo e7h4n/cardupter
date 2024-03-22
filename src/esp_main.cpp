@@ -77,7 +77,7 @@ void setup() {
                    esp_lcd_send_color);
 
   ui_begin();
-  ui_switch_page();
+
   set_fava_stat(FavaLedgerStat{
       .creditCardBalance = 100.0, .cashBalance = 1000.0, .xirr = 0.23});
 }

@@ -12,6 +12,12 @@
 #include "fava.h"
 #include "gui.h"
 #include "lvgl.h"
+#include <SDL2/SDL.h>
+
+void on_fava_timer() {
+  const auto &stat = getFavaLedgerStat();
+  set_fava_stat(stat);
+}
 
 int main() {
   lv_init();
@@ -20,18 +26,15 @@ int main() {
 
   ui_begin();
 
-  // 用 lv 设置一个定时器，100ms 后执行
-  lv_timer_create(
-      [](lv_timer_t *timer) {
-        const auto &stat = getFavaLedgerStat();
-        set_fava_stat(stat);
-      },
-      1000, nullptr);
+  on_fava_timer();
+  lv_timer_create([](lv_timer_t *timer) { on_fava_timer(); }, 1000 * 60,
+                  nullptr);
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "EndlessLoop"
   while (true) {
-    hal_loop();
+    lv_timer_handler();
+    SDL_Delay(10);
   }
 #pragma clang diagnostic pop
 }
