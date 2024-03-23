@@ -56,3 +56,4 @@ build
 script
 
 .venv/
+lib/conf/cardputer_conf.h

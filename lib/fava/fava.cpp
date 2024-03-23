@@ -1,13 +1,11 @@
 #include "fava.h"
 #include "http.h"
-#include "string"
+#include "cardputer_conf.h"
 
 static const char *TAG = "fava";
-const std::string LEDGER_STAT_API = "LEDGER_API";
 
-FavaLedgerStat getFavaLedgerStat()
-{
-    const auto &json = fill_json_resp_by_get(LEDGER_STAT_API);
+FavaLedgerStat getFavaLedgerStat() {
+    const auto &json = fill_json_resp_by_get(FAVA_DAILY_STAT_URL);
 
     FavaLedgerStat stat{};
     stat.creditCardBalance = json["credit_card_balance"];

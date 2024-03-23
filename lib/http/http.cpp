@@ -64,7 +64,10 @@ json fill_json_resp_by_get(const std::string &url) {
 
     WifiClientIterator begin{&client, false};
     WifiClientIterator end{&client, true};
-    return json::parse(begin, end);
+    auto data = json::parse(begin, end);
+
+    https.end();
+    return data;
 }
 
 #else

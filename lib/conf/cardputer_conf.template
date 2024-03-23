@@ -1,0 +1,5 @@
+#pragma once
+
+#define WIFI_SSID "WIFI"
+#define WIFI_PASSWORD "PASSWD"
+#define FAVA_DAILY_STAT_URL "FAVA_DAILY_STAT_URL"

@@ -8,7 +8,7 @@ extern "C" {
 
 void hal_setup(void);
 
-void hal_loop(void);
+[[noreturn]] void hal_loop(void);
 
 
 #ifdef __cplusplus
