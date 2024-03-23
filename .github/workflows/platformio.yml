@@ -19,6 +19,7 @@ jobs:
         run: pip install --upgrade platformio
       - name: Run PlatformIO
         run: |
+          cp lib/conf/cardputer_conf.{template,h}
           pio test -e native
 
 
@@ -38,6 +39,7 @@ jobs:
         run: pip install --upgrade platformio
       - name: Run PlatformIO
         run: |
+          cp lib/conf/cardputer_conf.{template,h}
           pio run -e native
 
   build-esp32:
@@ -52,4 +54,5 @@ jobs:
         run: pip install --upgrade platformio
       - name: Run PlatformIO
         run: |
+          cp lib/conf/cardputer_conf.{template,h}
           pio run -e release
