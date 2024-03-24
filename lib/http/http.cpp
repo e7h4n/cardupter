@@ -72,15 +72,17 @@ json fill_json_resp_by_get(const std::string &url) {
 
 #else
 
-json fill_json_resp_by_get(const std::string &url)
-{
-    printf("url: %s\n", url.c_str());
+
+json fill_json_resp_by_get(const std::string &url) {
     json data = {
-        {"credit_card_balance", 100.0},
-        {"cash_balance", 200.0},
-        {"xirr", 0.1},
+            {"credit_card_balance", 100.0},
+            {"cash_balance",        200.0},
+            {"xirr",                0.1},
+            {"today_change",        -340.29},
+            {"yesterday_change",    -2392.12},
     };
 
     return data;
 }
+
 #endif
